@@ -9,12 +9,12 @@
 # define	BLACK	0
 
 struct Node{
-	int	key;
-	Node*	parent;
-	Node*	left;
-	Node*	right;
-	int	color;
-}
+	int				key;
+	Node*			parent;
+	Node*			left;
+	Node*			right;
+	unsigned int	color : 1;
+};
 
 typedef Node*	Nodeptr;
 
@@ -33,13 +33,15 @@ class	RBTree{
 			ptr->left = nullptr;
 			ptr->left = nullptr;
 			ptr->color = RED;
-
 			if (root == 0){
 				root = ptr;
 				root->color = BLACK;
 				return true;
 			}
+			Nodeptr	current = root;
+			
+			return false;
 		}
-}
+};
 
 #endif
