@@ -2,6 +2,9 @@
 
 int	main(){
 	RBTree	tree;
-	tree.insert(3);
+	for (int i = 0; i < 11; i++)
+		tree.insert(i);
+
+	tree.printTree();
 	return 0;
 }
