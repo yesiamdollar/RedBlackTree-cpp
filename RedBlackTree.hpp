@@ -24,7 +24,7 @@ typedef Node*	Nodeptr;
 class	RBTree{
 	private:
 		Nodeptr	root;
-		Nodeptr	RBTinsert(Nodeptr src, Nodeptr ptr){
+		Nodeptr	RBTinsert(Nodeptr& src, Nodeptr& ptr){
 			if (src == nullptr) {
 				return ptr;
 			}
@@ -38,7 +38,7 @@ class	RBTree{
 			return src;
 		}
 
-		void	rotateLeft(Nodeptr& x){
+		void	rotateLeft(Nodeptr x){
 			Nodeptr	y = x->right;
 			x->right = y->left;
 
@@ -57,22 +57,23 @@ class	RBTree{
 			x->parent = y;
 		}
 
-		void	rotateRight(Nodeptr& x){
-			Nodeptr y = x->left;
-			x->left = y->right;
-			if (x->right != nullptr){
-				x->right->parent = x;
+		void	rotateRight(Nodeptr y){
+			Nodeptr x = y->left;
+			y->left = x->right;
+
+			if (y->right != nullptr){
+				y->right->parent = x;
 			}
-			y->parent = x->parent;
-			if (x->parent == nullptr) {
-				root = y;
-			} else if (x == x->parent->right) {
-				x->parent->right = y;
+			x->parent = y->parent;
+			if (y->parent == nullptr) {
+				root = x;
+			} else if (y == y->parent->right) {
+				y->parent->right = x;
 			} else {
-				x->parent->left = x;
+				y->parent->left = y;
 			}
-			y->right = x;
-			x->parent = y;
+			x->right = y;
+			y->parent = x;
 		}
 
 		void	fixRBT(Nodeptr&	p){
@@ -94,11 +95,11 @@ class	RBTree{
 						ptr = grandparent;
 					} else {
 						if (ptr == parent->right){
-							rotateLeft(grandparent);
+							rotateLeft(parent);
 							ptr = parent;
 							parent = ptr->parent;
 							// left rotate
-							;
+							// printTree();
 						}
 						// right rotate
 						rotateRight(grandparent);
@@ -115,11 +116,11 @@ class	RBTree{
 						ptr = grandparent;
 					} else {
 						if (ptr == parent->left){
-							rotateRight(grandparent);
+							rotateRight(parent);
 							ptr = parent;
 							parent = ptr->parent;
 							// right rotate
-							;
+							// printTree();
 						}
 						// left rotate
 						rotateLeft(grandparent);
