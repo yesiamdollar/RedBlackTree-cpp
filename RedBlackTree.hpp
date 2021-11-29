@@ -41,10 +41,19 @@ class	RBTree{
 		void	rotateLeft(Nodeptr x){
 			Nodeptr	y = x->right;
 			x->right = y->left;
-
+			/*
+			 * if (y) has a left subtree, assign (x) as
+			 * the parent of left subtree of (y)
+			 */
 			if (y->left != nullptr) {
 				y->left->parent = x;
 			}
+			/*
+			 * if the (x) parent is null make (y) the root
+			 * else if (x) is the left child of the parent,
+			 * make (y) as the left child of the parent
+			 * else assign (y) as the right child of parent 
+			 */
 			y->parent = x->parent;
 			if (x->parent == nullptr){
 				root = y;
@@ -53,6 +62,9 @@ class	RBTree{
 			} else {
 				x->parent->right = y;
 			}
+			/*
+			 * then make (y) as th parent of (x)
+			 */
 			y->left = x;
 			x->parent = y;
 		}
@@ -60,10 +72,19 @@ class	RBTree{
 		void	rotateRight(Nodeptr y){
 			Nodeptr x = y->left;
 			y->left = x->right;
-
+			/*
+			 * if (y) has a right subtree, assign (x) as
+			 * the parent of right subtree of (y)
+			 */
 			if (y->right != nullptr){
 				y->right->parent = x;
 			}
+			/*
+			 * if the (x) parent is null make (y) the root
+			 * else if (x) is the right child of the parent,
+			 * make (y) as the right child of the parent
+			 * else assign (y) as the left child of parent 
+			 */
 			x->parent = y->parent;
 			if (y->parent == nullptr) {
 				root = x;
@@ -72,6 +93,9 @@ class	RBTree{
 			} else {
 				y->parent->left = y;
 			}
+			/*
+			 * then make (y) as th parent of (x)
+			 */
 			x->right = y;
 			y->parent = x;
 		}
@@ -163,7 +187,17 @@ class	RBTree{
 		Nodeptr& getRoot() {
 			return root;
 		}
-		
+		Nodeptr&	search(Nodeptr& src, int k){
+			if (src->key == k || src == nullptr){
+				return src;
+			} else {
+				if (src->key < k)
+					return search(src->left, k);
+				else
+					return search(src->right, k);
+			}
+			return src;
+		}
     // function to print the tree.
 		void printTree()
 		{
