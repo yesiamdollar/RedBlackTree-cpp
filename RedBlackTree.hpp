@@ -8,7 +8,7 @@
 # define	RED	1
 # define	BLACK	0
 namespace ft {
-	template<class T = int>
+	template<class T>
 	struct Node{
 		Node(T k) : key(k), parent(NULL), left(NULL), right(NULL), color(RED){};
 		T				key;
@@ -18,11 +18,11 @@ namespace ft {
 		unsigned int	color;
 	};
 
-	typedef ft::Node<int>*	Nodeptr;
 
-	template<class T = int>
+	template<class T>
 	class	RBTree{
 		private:
+			typedef ft::Node<T>*	Nodeptr;
 			Nodeptr	root;
 			Nodeptr	RBTinsert(Nodeptr& src, Nodeptr& ptr){
 				if (src == NULL) {
@@ -187,7 +187,7 @@ namespace ft {
 			Nodeptr& getRoot() {
 				return root;
 			}
-			Nodeptr&	search(Nodeptr& src, int k){
+			Nodeptr&	search(Nodeptr& src, T k){
 				if (src->key == k || src == NULL){
 					return src;
 				} else {
