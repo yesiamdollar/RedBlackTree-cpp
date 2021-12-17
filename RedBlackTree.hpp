@@ -4,7 +4,8 @@
 
 
 # include <iostream>
-
+# include <memory>
+# include "pair.hpp"
 # define	RED	1
 # define	BLACK	0
 namespace ft {
@@ -18,8 +19,10 @@ namespace ft {
 		unsigned int	color;
 	};
 
-
-	template<class T>
+	template< class Key,
+				class Compare = std::less<Key>,
+				class Allocator = std::allocator<Key>
+				>
 	class	RBTree{
 		private:
 			typedef ft::Node<T>*	Nodeptr;
