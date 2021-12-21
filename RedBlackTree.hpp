@@ -19,13 +19,14 @@ namespace ft {
 		unsigned int	color;
 	};
 
-	template< class Key,
-				class Compare = std::less<Key>,
-				class Allocator = std::allocator<Key>
+	template< class T,
+				class Compare = std::less<T>,
+				class Allocator = std::allocator<T>
 				>
 	class	RBTree{
-		private:
+		public:
 			typedef ft::Node<T>*	Nodeptr;
+		private:
 			Nodeptr	root;
 			Nodeptr	RBTinsert(Nodeptr& src, Nodeptr& ptr){
 				if (src == NULL) {
@@ -103,7 +104,7 @@ namespace ft {
 				y->parent = x;
 			}
 
-			void	fixRBT(Nodeptr&	p){
+			void	insetFixRBT(Nodeptr&	p){
 				Nodeptr	ptr = p, parent, grandparent, uncle = NULL;
 
 				while ((ptr != root) && (ptr->color == RED) && (ptr->parent->color == RED)){
@@ -178,6 +179,53 @@ namespace ft {
 					printTreeHelper(root->left, space);
 				}
 			}
+
+			void rbTransplant(Nodeptr x, Nodeptr y) {
+				if (x->parent == NULL) {
+					root = y;
+				} else if (x == x->parent->left) {
+					x->parent->left = y;
+				} else {
+					x->parent->right = y;
+				}
+				y->parent = x->parent;
+			}
+
+			Nodeptr minimum(Nodeptr src) {
+				while (src->left != NULL) {
+					src = src->left;
+				}
+				return src;
+			}
+
+			Nodeptr maximum(Nodeptr src) {
+				while (src->right != NULL) {
+					src = src->right;
+				}
+				return src;
+			}
+
+			Nodeptr	predecessor(Nodeptr src){
+				
+			}
+
+			void	deleteHelper(T key){
+				Nodeptr del = search(key), x, y;
+				unsigned int	color;
+				if (del == NULL){
+					std::cout << "Node not found\n";
+					return ;
+				}
+				
+				// else
+			}
+			Nodeptr searcher(Nodeptr src, T key){
+				if (src == NULL || src->key == key)
+					return src;
+				if (src->key < key)
+						return searcher(src->left, key);
+				return searcher(src->right, key);
+			}
 			
 		public:
 			RBTree(): root(NULL) {}
@@ -185,25 +233,21 @@ namespace ft {
 			void insert(T key){
 				Nodeptr	ptr = new Node<T>(key);
 				root = RBTinsert(root, ptr);
-				fixRBT(ptr);
+				insetFixRBT(ptr);
 			}
+
 			Nodeptr& getRoot() {
 				return root;
 			}
-			Nodeptr&	search(Nodeptr& src, T k){
-				if (src->key == k || src == NULL){
-					return src;
-				} else {
-					if (src->key < k)
-						return search(src->left, k);
-					else
-						return search(src->right, k);
-				}
-				return src;
+			Nodeptr	search(T key){
+				return searcher(root, key);
 			}
 
-			void printTree()
-			{
+			void	remove(T key){
+				deleteHelper(key);
+			}
+
+			void printTree(){
 				printTreeHelper(root, 0);
 			}
 	};
